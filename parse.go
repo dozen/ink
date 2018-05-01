@@ -33,6 +33,7 @@ type AuthorConfig struct {
 }
 
 type BuildConfig struct {
+	Output	string
 	Port    string
 	Watch   bool
 	Copy    []string
@@ -59,6 +60,8 @@ type ArticleConfig struct {
 	Draft      bool
 	Preview    template.HTML
 	Top        bool
+	Type       string
+	Hide       bool
 	Config     interface{}
 }
 
@@ -89,7 +92,7 @@ const (
 	MORE_SPLIT   = "<!--more-->"
 )
 
-func Parse(markdown string) template.HTML {
+func ParseMarkdown(markdown string) template.HTML {
 	// html.UnescapeString
 	return template.HTML(blackfriday.MarkdownCommon([]byte(markdown)))
 }
@@ -116,6 +119,12 @@ func ParseGlobalConfig(configPath string, develop bool) *GlobalConfig {
 		config.Site.Root = ""
 	}
 	config.Site.Logo = strings.Replace(config.Site.Logo, "-/", config.Site.Root+"/", -1)
+	if config.Site.Url != "" && strings.HasSuffix(config.Site.Url, "/") {
+		config.Site.Url = strings.TrimSuffix(config.Site.Url, "/")
+	}
+	if (config.Build.Output == "") {
+		config.Build.Output = "public"
+	}
 	// Parse Theme Config
 	themeConfig := ParseThemeConfig(filepath.Join(rootPath, config.Site.Theme, "config.yml"))
 	for _, copyItem := range themeConfig.Copy {
@@ -168,11 +177,16 @@ func ParseArticleConfig(markdownPath string) (config *ArticleConfig, content str
 	if config == nil {
 		return nil, ""
 	}
+	if config.Type == "" {
+		config.Type = "post"
+	}
 	// Parse preview splited by MORE_SPLIT
 	previewAry := strings.SplitN(content, MORE_SPLIT, 2)
 	if len(config.Preview) <= 0 && len(previewAry) > 1 {
-		config.Preview = Parse(previewAry[0])
+		config.Preview = ParseMarkdown(previewAry[0])
 		content = strings.Replace(content, MORE_SPLIT, "", 1)
+	} else {
+		config.Preview = ParseMarkdown(string(config.Preview))
 	}
 	return config, content
 }
@@ -188,12 +202,16 @@ func ParseArticle(markdownPath string) *Article {
 	}
 	var article Article
 	// Parse markdown content
+	article.Hide = config.Hide
+	article.Type = config.Type
 	article.Preview = config.Preview
 	article.Config = config.Config
 	article.Markdown = content
-	article.Content = Parse(content)
-	article.Time = ParseDate(config.Date)
-	article.Date = article.Time.Unix()
+	article.Content = ParseMarkdown(content)
+	if config.Date != "" {
+		article.Time = ParseDate(config.Date)
+		article.Date = article.Time.Unix()
+	}
 	if config.Update != "" {
 		article.MTime = ParseDate(config.Update)
 		article.Update = article.MTime.Unix()
@@ -228,5 +246,33 @@ func ParseArticle(markdownPath string) *Article {
 	} else {
 		article.Cover = config.Topic
 	}
+	// Generate page name
+	fileName := strings.TrimSuffix(strings.ToLower(filepath.Base(markdownPath)), ".md")
+	link := fileName + ".html"
+	// Genetate custom link
+	if article.Type == "post" {
+		datePrefix := article.Time.Format("2006-01-02-")
+		if strings.HasPrefix(fileName, datePrefix) {
+			fileName = fileName[len(datePrefix):]
+		}
+		if globalConfig.Site.Link != "" {
+			linkMap := map[string]string{
+				"{year}":     article.Time.Format("2006"),
+				"{month}":    article.Time.Format("01"),
+				"{day}":      article.Time.Format("02"),
+				"{hour}":     article.Time.Format("15"),
+				"{minute}":   article.Time.Format("04"),
+				"{second}":   article.Time.Format("05"),
+				"{category}": article.Category,
+				"{title}":    fileName,
+			}
+			link = globalConfig.Site.Link
+			for key, val := range linkMap {
+				link = strings.Replace(link, key, val, -1)
+			}
+		}
+	}
+	article.Link = link
+	article.GlobalConfig = *globalConfig
 	return &article
 }

@@ -3,19 +3,20 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/codegangsta/cli"
-	"github.com/facebookgo/symwalk"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"strings"
+
+	"github.com/codegangsta/cli"
+	"github.com/facebookgo/symwalk"
+	"gopkg.in/yaml.v2"
 )
 
 const (
-	VERSION      = "RELEASE 2016-07-11"
+	VERSION      = "RELEASE 2017-09-24"
 	DEFAULT_ROOT = "blog"
 )
 
@@ -66,7 +67,6 @@ func main() {
 			Action: func(c *cli.Context) error {
 				ParseGlobalConfigByCli(c, true)
 				Build()
-				Watch()
 				Serve()
 				return nil
 			},
@@ -119,7 +119,7 @@ func Publish() {
 		flag = "-c"
 	}
 	cmd := exec.Command(shell, flag, command)
-	cmd.Dir = filepath.Join(rootPath, "public")
+	cmd.Dir = filepath.Join(rootPath, globalConfig.Build.Output)
 	// Start print stdout and stderr of process
 	stdout, _ := cmd.StdoutPipe()
 	stderr, _ := cmd.StderrPipe()

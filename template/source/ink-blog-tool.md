@@ -17,7 +17,11 @@ preview: 纸小墨（InkPaper）是一个GO语言编写的开源静态博客构�
 ![纸小墨 - 简洁的静态博客构建工具](-/images/example.png)
 
 ### 开始上手
-- 下载并解压 [纸小墨](http://www.inkpaper.io/)，运行命令 `ink preview`。
+
+- 下载并解压 [Ink](http://www.chole.io/)，运行命令 `ink preview`
+
+  > 注意：Linux/macOS下，使用 `./ink preview`
+
 - 使用浏览器访问 `http://localhost:8000` 预览。
 
 ### 特性介绍
@@ -53,6 +57,7 @@ authors:
         avatar: 作者头像路径
 
 build:
+    output: 构建输出目录 #可选, 默认为 "public"
     port: 预览端口
     copy:
         - 构建时将会复制的目录/文件
@@ -75,6 +80,8 @@ preview: 文章预览，也可在正文中使用<!--more-->分割 #可选
 tags: #可选
     - 标签1
     - 标签2
+type: post #指定类型为文章(post)或页面(page)，可选
+hide: false #隐藏文章，只可通过链接访问，可选
 
 ---
 
@@ -91,7 +98,7 @@ Markdown格式的正文
 
 ### 修改主题
 
-默认主题在`theme`目录下，修改源代码后在该目录下运行`npm install`与`webpack`重新构建。
+默认主题在`theme`目录下，修改源代码后在该目录下运行`npm install`与`npm run build`重新构建。
 
 页面包含`page.html`（文章列表）及`article.html`（文章）等，所有页面均支持[GO语言HTML模板](http://golang.org/pkg/html/template/)语法，可引用变量。
 
@@ -120,10 +127,14 @@ Docker构建（示例）
 2. 源码目录下构建镜像`docker build -t ink .`。
 3. 运行容器`docker run -p 8000:80 ink`。
 
-## 三方主题
+## 主题
 
-- Pure: [https://github.com/Xdatk/ink-pure](https://github.com/Xdatk/ink-pure)
-- Werttin: [https://github.com/Skimige/ink_Werttin](https://github.com/Skimige/ink_Werttin)
+- Dark(Official Theme): [https://github.com/InkProject/ink-theme-dark](https://github.com/InkProject/ink-theme-dark)
+- simple: [https://github.com/myiq/ink-simple](https://github.com/myiq/ink-simple)
+
+## 相关链接
+
+- [InkPaper 最佳实践](https://segmentfault.com/a/1190000009084954)
 
 ## 反馈贡献
 
@@ -144,7 +155,8 @@ Docker构建（示例）
 
 ## 正在使用
 
-- [http://www.inkpaper.io/blog/](http://www.inkpaper.io/blog/)
+- [http://www.chole.io/blog/](http://www.chole.io/blog/)
 - [http://blog.hyper.sh/](http://blog.hyper.sh/)
 - [http://wangxu.me/](http://wangxu.me/)
 - [http://whzecomjm.com/](http://whzecomjm.com/)
+- [http://www.shery.me/blog/](http://www.shery.me/blog/)

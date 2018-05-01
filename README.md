@@ -2,10 +2,17 @@
 
 InkPaper is an static blog generator developed by Golang, No dependencies, Cross platform, Easy use, Fast build, Elegant theme.
 
+[![release](https://img.shields.io/badge/release-v2017--02--25-blue.svg)](http://www.chole.io/)
+[![apm](https://img.shields.io/badge/license-CC%20BY--NC%204.0-blue.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+
+
 ![InkPaper - An Elegant Static Blog Generator](template/source/images/example-en.png)
 
 ### Quick Start
-- Download & Extract [Ink](http://www.inkpaper.io/)，Run `ink preview`
+- Download & Extract [Ink](http://www.chole.io/)，Run `ink preview`
+
+  > Tips：Linux/macOS, use `./ink preview`
+
 - Open `http://localhost:8000` in browser to preview
 
 ### Website Configuration
@@ -21,7 +28,7 @@ site:
     root: Website Root Path #Optional
     lang: Website Language #Support en, zh, ru, ja, Configurable in theme/lang.yml
     url: Website URL #For RSS Generating
-    link: Article Link Scheme #Default Is {title}.html，Support {year},{month},{day},{title} Variables
+    link: Article Link Scheme #Default Is {title}.html，Support {year},{month},{day},{hour},{minute},{second},{title} Variables
 
 authors:
     AuthorID:
@@ -30,6 +37,7 @@ authors:
         avatar: Author Avatar Path
 
 build:
+    output: Build Output Directory #Optional, Default is "public"
     port: Preview Port
     copy:
         - Copied Files When Build
@@ -52,6 +60,8 @@ preview: Article Preview，Also use <!--more--> to split in body #Optional
 tags: #Optional
     - Tag1
     - Tag2
+type: post #Specify type is post or page, Optional
+hide: false #Hide article，can be accessed via URL, Optional
 
 ---
 
@@ -68,7 +78,7 @@ Markdown Format's Body
 
 ### Modify Theme
 
-Default theme placed in `theme` folder, run `npm install` and `webpack` to rebuild in this folder.
+Default theme placed in `theme` folder, run `npm install` and `npm run build` to rebuild in this folder.
 
 page `page.html` (article list) and `article.html` (article), use variable with [Golang Template](http://golang.org/pkg/html/template/) syntax.
 
@@ -100,8 +110,12 @@ Docker Build (Example)
 
 ## Theme
 
-- Pure: [https://github.com/Xdatk/ink-pure](https://github.com/Xdatk/ink-pure)
-- Werttin: [https://github.com/Skimige/ink_Werttin](https://github.com/Skimige/ink_Werttin)
+- Dark(Official Theme): [https://github.com/InkProject/ink-theme-dark](https://github.com/InkProject/ink-theme-dark)
+- simple: [https://github.com/myiq/ink-simple](https://github.com/myiq/ink-simple)
+
+## Related Toturials
+
+- [Automatically deploy your Ink blog to GitHub pages wiht Travis CI](http://www.shery.me/blog/travis-ci.html)
 
 ## License
 [CC Attribution-NonCommercial License 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
@@ -112,6 +126,7 @@ Docker Build (Example)
 
 ## Change Log
 
+- [2017-02-25] Fix bugs and merge some PRs
 - [2016-07-11] Fix bugs and merge many PRs
 - [2015-08-15] Bug fix, support RSS feed, improve theme
 - [2015-07-04] Bug fix, improve theme, support top, i18n, subtemplate
@@ -125,6 +140,8 @@ Docker Build (Example)
 
 ## They are using
 
-- [http://www.inkpaper.io/blog/](http://www.inkpaper.io/blog/)
-- [https://hyper.sh/blog/](https://hyper.sh/blog/)
+- [http://www.chole.io/blog/](http://www.chole.io/blog/)
+- [http://blog.hyper.sh/](http://blog.hyper.sh/)
 - [http://wangxu.me/](http://wangxu.me/)
+- [http://whzecomjm.com/](http://whzecomjm.com/)
+- [http://www.shery.me/blog/](http://www.shery.me/blog/)

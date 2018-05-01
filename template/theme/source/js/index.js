@@ -68,14 +68,14 @@ var initSearch = function() {
     for (var i = 0; i < keywords.length; i++) {
       var keyword = keywords[i]
       var wrap = '<span class="searched">' + keyword + '</span>'
-      title = title.replace(keyword, wrap)
-      preview = preview.replace(keyword, wrap)
+      var reg = new RegExp(keyword, 'ig')
+      title = title.replace(reg, wrap)
+      preview = preview.replace(reg, wrap)
     }
     return searchTpl
     .replace('{{title}}', title)
-    .replace('{{link}}', link)
+    .replace('{{link}}', link + '?search=' + keywords)  // append keywords to url
     .replace('{{preview}}', preview)
-    .replace('{{cover}}', cover)
   }
   searchWorker.onmessage = function(event) {
     var results = event.data.results
@@ -158,3 +158,41 @@ $(function() {
   // init search
   initSearch()
 })
+
+// get searched keywords from url
+var reg = new RegExp("(^|&)search=([^&]*)(&|$)")
+var r = window.location.search.substr(1).match(reg)
+if (r != null && r.toString().length > 1) {
+  var keywords = decodeURI(r[2]).split(',')
+  // highlight searched keywords
+  var content = document.body.innerHTML
+  for (var i = 0; i < keywords.length; i++) {
+    var keyword = keywords[i]
+    var wrap = '<span class="searched">' + keyword + '</span>'
+    var reg = new RegExp(keyword, 'ig')
+    content = content.replace(reg, wrap)
+  }
+  document.body.innerHTML = content
+  // scroll to the first searched keyword
+  var elmnt = document.getElementsByClassName("searched")
+  elmnt[0].scrollIntoView()
+}
+
+// show "go top" button when needed
+$(document).ready(function () {
+  $("#go_top").hide();
+  $(function () {
+    var height = $(window).height();
+    $(window).scroll(function () {
+      if ($(window).scrollTop() > height) {
+        $("#go_top").fadeIn(500);
+      } else {
+        $("#go_top").fadeOut(500);
+      }
+    });
+    $("#go_top").click(function () {
+      $('body,html').animate({ scrollTop: 0 }, 100);
+      return false;
+    });
+  });
+});

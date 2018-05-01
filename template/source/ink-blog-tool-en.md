@@ -17,7 +17,10 @@ InkPaper is an static blog generator developed by Golang, No dependencies, Cross
 ![InkPaper - An Elegant Static Blog Generator](-/images/example-en.png)
 
 ### Quick Start
-- Download & Extract [Ink](http://www.inkpaper.io/)，Run `ink preview`
+- Download & Extract [Ink](http://www.chole.io/)，Run `ink preview`
+
+  > Tips：Linux/macOS, use `./ink preview`
+
 - Open `http://localhost:8000` in browser to preview
 
 ### Website Configuration
@@ -42,6 +45,7 @@ authors:
         avatar: Author Avatar Path
 
 build:
+    output: Build Output Directory #Optional, Default is "public"
     port: Preview Port
     copy:
         - Copied Files When Build
@@ -64,6 +68,8 @@ preview: Article Preview，Also use <!--more--> to split in body #Optional
 tags: #Optional
     - Tag1
     - Tag2
+type: post #Specify type is post or page, Optional
+hide: false #Hide article，can be accessed via URL, Optional
 
 ---
 
@@ -80,7 +86,7 @@ Markdown Format's Body
 
 ### Modify Theme
 
-Default theme placed in `theme` folder, run `npm install` and `webpack` to rebuild in this folder.
+Default theme placed in `theme` folder, run `npm install` and `npm run build` to rebuild in this folder.
 
 page `page.html` (article list) and `article.html` (article), use variable with [Golang Template](http://golang.org/pkg/html/template/) syntax.
 
@@ -112,8 +118,12 @@ Docker Build (Example)
 
 ## Theme
 
-- Pure: [https://github.com/Xdatk/ink-pure](https://github.com/Xdatk/ink-pure)
-- Werttin: [https://github.com/Skimige/ink_Werttin](https://github.com/Skimige/ink_Werttin)
+- Dark(Official Theme): [https://github.com/InkProject/ink-theme-dark](https://github.com/InkProject/ink-theme-dark)
+- simple: [https://github.com/myiq/ink-simple](https://github.com/myiq/ink-simple)
+
+## Related Toturials
+
+- [Automatically deploy your Ink blog to GitHub pages wiht Travis CI](http://www.shery.me/blog/travis-ci.html)
 
 ## Issue Report
 
@@ -136,7 +146,8 @@ Docker Build (Example)
 
 ## They are using
 
-- [http://www.inkpaper.io/blog/](http://www.inkpaper.io/blog/)
+- [http://www.chole.io/blog/](http://www.chole.io/blog/)
 - [http://blog.hyper.sh/](http://blog.hyper.sh/)
 - [http://wangxu.me/](http://wangxu.me/)
 - [http://whzecomjm.com/](http://whzecomjm.com/)
+- [http://www.shery.me/blog/](http://www.shery.me/blog/)
