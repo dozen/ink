@@ -1,5 +1,5 @@
 @define-mixin font-main {
-  font-family: "Helvetica Neue", Arial, "Hiragino Sans GB", "WenQuanYi Micro Hei", "Microsoft YaHei", sans-serif;
+  font-family: 'Helvetica Neue', Arial, 'Hiragino Sans GB', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', sans-serif;
 }
 
 @define-mixin font-code {
